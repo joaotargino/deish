@@ -33,6 +33,7 @@ class ViewOrdersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_orders)
 
+        title = "View Orders"
         fetchOrders()
     }
 
