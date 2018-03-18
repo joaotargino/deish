@@ -297,10 +297,10 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         val IS_PRIMARY = 1
     }
 
-    fun initMainActivity() {
+    fun initMainActivity(token : String) {
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.putExtra("username", "string")
-        intent.putExtra("token", "token")
+        intent.putExtra("token", token)
         startActivity(intent)
     }
 
@@ -309,9 +309,9 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      * the user.
      */
     inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String,
-                                                   private val mName: String, private val mAddress: String) : AsyncTask<Void, Void, Boolean>() {
+                                                   private val mName: String, private val mAddress: String) : AsyncTask<Void, Void, String>() {
 
-        override fun doInBackground(vararg params: Void): Boolean? {
+        override fun doInBackground(vararg params: Void): String? {
             // TODO: attempt authentication against a network service.
             var urlConnection: HttpURLConnection? = null
             var reader: BufferedReader? = null
@@ -362,13 +362,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 //                }
 //                result = buffer.toString()
 
-                println("TOKEN:")
-                println(result)
+//                println("TOKEN:")
+                return result
                 // Simulate network access.
 //                Thread.sleep(2000)
             } catch (e: Exception) {
                 println(e.message)
-                return false
+                return ""
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect()
@@ -383,24 +383,26 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 }
             }
 
-            if (!result.isEmpty()) return true
+            if (!result.isEmpty()) return ""
 
-            return DUMMY_CREDENTIALS
-                    .map { it.split(":") }
-                    .firstOrNull { it[0] == mEmail }
-                    ?.let {
-                        // Account exists, return true if the password matches.
-                        it[1] == mPassword
-                    }
-                    ?: true
+
+//            return DUMMY_CREDENTIALS
+//                    .map { it.split(":") }
+//                    .firstOrNull { it[0] == mEmail }
+//                    ?.let {
+//                        // Account exists, return true if the password matches.
+//                        it[1] == mPassword
+//                    }
+//                    ?: true
         }
 
-        override fun onPostExecute(success: Boolean?) {
+        override fun onPostExecute(result: String?) {
             mAuthTask = null
             showProgress(false)
 
-            if (success!!) {
-                initMainActivity()
+            println(result)
+            if (!result!!.isEmpty()) {
+                initMainActivity(result)
 
                 finish()
             } else {
