@@ -14,13 +14,16 @@ import com.moolajoo.deish.util.EXTRA_STORE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_store_detail.*
 
 class StoreDetailActivity : AppCompatActivity() {
 
     private var mProductsList: List<Product>? = null
     lateinit var adapter: ProductsAdapter
     private var disposable: Disposable? = null
+
+
+    private var currentCart : ArrayList<Product>? =  ArrayList<Product>()
 
     private val apiServe by lazy {
         ApiClient.create()
@@ -33,6 +36,16 @@ class StoreDetailActivity : AppCompatActivity() {
         val storeObject = intent.getParcelableExtra<Store>(EXTRA_STORE)
 
         fetchProducts(storeObject.id)
+
+
+        fabCart.setOnClickListener {
+            //get array list, start order activity
+            println(currentCart!!.toString())
+
+            //            val storesIntent = Intent(this, StoreDetailActivity::class.java)
+//            storesIntent.putExtra(EXTRA_STORE, productItem)
+//            startActivity(productItem)
+        }
     }
 
 
@@ -58,16 +71,17 @@ class StoreDetailActivity : AppCompatActivity() {
 
         adapter = ProductsAdapter(this, mProductsList!!) { productItem ->
             println(productItem.name)
-//            val storesIntent = Intent(this, StoreDetailActivity::class.java)
-//            storesIntent.putExtra(EXTRA_STORE, productItem)
-//            startActivity(productItem)
+            Toast.makeText(this, productItem.name + " added", Toast.LENGTH_SHORT).show()
+            currentCart!!.add(productItem)
+
+            //TODO add dialog box to confirm/cancel adding a product and/or snackbar to undo
         }
-        recyclerView.adapter = adapter
+        recyclerViewProducts.adapter = adapter
 
         val layoutManager = GridLayoutManager(this, numberOfColumns())
-        recyclerView.layoutManager = layoutManager
+        recyclerViewProducts.layoutManager = layoutManager
 //        recyclerView.layoutManager.smoothScrollToPosition(recyclerView, null, viewPosition) //TODO scroll on restore
-        recyclerView.setHasFixedSize(true)
+        recyclerViewProducts.setHasFixedSize(true)
 
     }
 

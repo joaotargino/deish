@@ -49,7 +49,9 @@ class ProductsAdapter(context: Context, productList: List<Product>, val itemClic
 
             itemView.contentDescription = product.name
 
-            itemView.setOnClickListener { itemClick(product) }
+            itemView.setOnClickListener {
+                itemClick(product)
+            }
         }
 
     }

@@ -9,7 +9,7 @@ import java.util.*
  */
 class Order(val id: Int, val date: String, val customerId: Int, val deliveryAddress: String,
             val contact: String, val storeId: Int, val orderItens: ArrayList<OrderItem>,
-            val total: Double, val status: String, val lasstUpdate: String) : Parcelable {
+            val total: Double, val status: String, val lastUpdate: String) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
 //            TODO("date"),
@@ -34,7 +34,7 @@ class Order(val id: Int, val date: String, val customerId: Int, val deliveryAddr
         parcel.writeArray(orderItens)
         parcel.writeDouble(total)
         parcel.writeString(status)
-        parcel.writeString(lasstUpdate)
+        parcel.writeString(lastUpdate)
     }
 
     override fun describeContents(): Int {
