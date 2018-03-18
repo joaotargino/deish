@@ -4,9 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.*
 
-/**
- * Created by joaopaulotargino on 2018-03-17.
- */
+
 class Order(val id: Int, val date: String, val customerId: Int, val deliveryAddress: String,
             val contact: String, val storeId: Int, val orderItens: ArrayList<OrderItem>,
             val total: Double, val status: String, val lastUpdate: String) : Parcelable {

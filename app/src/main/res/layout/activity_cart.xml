@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.moolajoo.deish.controller.CartActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewCart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabPlaceOrder"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_margin="8dp"
+        android:contentDescription="place order"
+        android:focusable="false"
+        app:backgroundTint="@android:color/holo_red_dark"
+        app:borderWidth="0dp"
+        app:elevation="@dimen/fab_elevation"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/recyclerViewCart"
+        app:layout_anchorGravity="right|bottom"
+        app:srcCompat="@android:drawable/ic_menu_send"
+        tools:layout_editor_absoluteY="115dp" />
+
+</android.support.design.widget.CoordinatorLayout>

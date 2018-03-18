@@ -3,9 +3,7 @@ package com.moolajoo.deish.model
 import android.os.Parcel
 import android.os.Parcelable
 
-/**
- * Created by joaopaulotargino on 2018-03-17.
- */
+
 class Customer (val id : Int, val email:String, val name :String, val address: String,
                 val creation : String, val password : String) : Parcelable {
     constructor(parcel: Parcel) : this(

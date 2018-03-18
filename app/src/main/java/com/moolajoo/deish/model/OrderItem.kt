@@ -3,9 +3,7 @@ package com.moolajoo.deish.model
 import android.os.Parcel
 import android.os.Parcelable
 
-/**
- * Created by joaopaulotargino on 2018-03-17.
- */
+
 class OrderItem (val id : Int, val orderId : Int, val productId: Int,
                  val product: Product, val price : Double, val quantity : Int,
                  val total: Double) : Parcelable {

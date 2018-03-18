@@ -3,9 +3,7 @@ package com.moolajoo.deish.model
 import android.os.Parcel
 import android.os.Parcelable
 
-/**
- * Created by joaopaulotargino on 2018-03-17.
- */
+
 class StoreResponse() : Parcelable {
 
     var data: List<Store>? = null

@@ -12,9 +12,7 @@ import com.moolajoo.deish.model.Store
 import com.moolajoo.deish.util.STORE_LOGO_URL
 import com.squareup.picasso.Picasso
 
-/**
- * Created by joaopaulotargino on 2018-03-17.
- */
+
 class StoresAdapter(context: Context, storeList: List<Store>, val itemClick: (Store) -> Unit) :
         RecyclerView.Adapter<StoresAdapter.Holder>() {
     val context = context

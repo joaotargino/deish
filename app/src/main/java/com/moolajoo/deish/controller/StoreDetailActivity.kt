@@ -1,7 +1,8 @@
 package com.moolajoo.deish.controller
 
-import android.support.v7.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.util.DisplayMetrics
 import android.widget.Toast
@@ -10,6 +11,7 @@ import com.moolajoo.deish.adapters.ProductsAdapter
 import com.moolajoo.deish.model.Product
 import com.moolajoo.deish.model.Store
 import com.moolajoo.deish.network.ApiClient
+import com.moolajoo.deish.util.EXTRA_CART
 import com.moolajoo.deish.util.EXTRA_STORE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -23,7 +25,7 @@ class StoreDetailActivity : AppCompatActivity() {
     private var disposable: Disposable? = null
 
 
-    private var currentCart : ArrayList<Product>? =  ArrayList<Product>()
+    private var currentCart: ArrayList<Product>? = ArrayList<Product>()
 
     private val apiServe by lazy {
         ApiClient.create()
@@ -37,19 +39,20 @@ class StoreDetailActivity : AppCompatActivity() {
 
         fetchProducts(storeObject.id)
 
+        title = storeObject.name
 
         fabCart.setOnClickListener {
             //get array list, start order activity
             println(currentCart!!.toString())
 
-            //            val storesIntent = Intent(this, StoreDetailActivity::class.java)
-//            storesIntent.putExtra(EXTRA_STORE, productItem)
-//            startActivity(productItem)
+            val orderIntent = Intent(this, CartActivity::class.java)
+            orderIntent.putExtra(EXTRA_CART, currentCart)
+            startActivity(orderIntent)
         }
     }
 
 
-    private fun fetchProducts(id : Int) {
+    private fun fetchProducts(id: Int) {
 
         disposable =
                 apiServe.getStoreProducts(id.toString())
