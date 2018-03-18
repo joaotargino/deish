@@ -4,6 +4,7 @@ import com.moolajoo.deish.model.*
 import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.*
+import java.util.ArrayList
 
 /**
  * Created by joaopaulotargino on 2018-03-17.
@@ -35,4 +36,26 @@ interface ApiService {
                   @Query("password") password: String): Observable<String>
 
 
+
+    @Multipart
+    @POST ("Order")
+    fun postOrder(
+            @Header("Authorization") token : String,
+            @Part("id") id: Int, @Part("date") date: String,
+            @Part("customerId") customerId: Int, @Part("deliveryAddress") deliveryAddress: String,
+            @Part("contact") contact: String, @Part("storeId") storeId: Int,
+            @Part("orderItens") orderItens: ArrayList<OrderItem>,
+            @Part("total") total: Double, @Part("status") status: String,
+            @Part("lastUpdate") lastUpdate: String
+
+    ) :Call<Order>
+
+
+
+    @POST ("Order")
+    fun postOrderBody(
+            @Header("Authorization") token : String,
+            @Body order: String
+
+    ) :Call<String>
 }

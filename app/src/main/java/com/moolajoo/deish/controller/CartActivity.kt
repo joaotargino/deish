@@ -4,15 +4,21 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.widget.Toast
+import com.google.gson.Gson
 import com.moolajoo.deish.R
 import com.moolajoo.deish.adapters.CartAdapter
 import com.moolajoo.deish.model.Order
 import com.moolajoo.deish.model.OrderItem
 import com.moolajoo.deish.model.Product
 import com.moolajoo.deish.model.Store
+import com.moolajoo.deish.network.ApiClient
 import com.moolajoo.deish.util.EXTRA_CART
 import com.moolajoo.deish.util.EXTRA_STORE
+import com.moolajoo.deish.util.TOKEN
 import kotlinx.android.synthetic.main.activity_cart.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CartActivity : AppCompatActivity() {
 
@@ -20,34 +26,80 @@ class CartActivity : AppCompatActivity() {
     private var mOrder: ArrayList<OrderItem>? = ArrayList<OrderItem>()
     lateinit var adapter: CartAdapter
 
+    private val apiServe by lazy {
+        ApiClient.create()
+    }
+
+
+    val storeObject: Store? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
 
         mProductsList = intent.getSerializableExtra(EXTRA_CART) as List<Product>
         val storeObject = intent.getParcelableExtra<Store>(EXTRA_STORE)
+        val storeId = storeObject.id
+        //temp
+        val customerID = 0 //TODO get the customer!!!
+        val address = "Address"
+        val contact = "99998 0605"
+        val status = "processing"
+        val lastUpdate = "date"
 
         println(storeObject.name)
         println(mProductsList)
         populateCart()
         createOrder()
 
-        val customerID = 0 //TODO get the customer!!!
-        val address = "Address"
-        val contact = "99998 0605"
-        val storeId = storeObject.id
-        val status = "processing"
-        val lastUpdate = "date"
+
 
 
         fabPlaceOrder.setOnClickListener {
             //get array list, start order activity
             println(mOrder!!)
 
-            val theOrder = Order(424242, "date", customerID, address, contact, storeId,
-                    mOrder!!, mOrder!!.get(0).total, status, lastUpdate)
-
+            if (!mOrder!!.isEmpty()) {
+                val theOrder = Order(424242, "date", customerID, address, contact, storeId,
+                        mOrder!!, mOrder!!.get(0).total, status, lastUpdate)
+                println(Gson().toJson(theOrder))
+                placeOrder(theOrder)
+            }
         }
+    }
+
+
+    fun placeOrder(order: Order) {
+//        var call: Call<Order> = apiServe.postOrder(TOKEN, order.id, order.date, order.customerId, order.deliveryAddress,
+//                order.contact, order.storeId, order.orderItens, order.total, order.status,
+//                order.lastUpdate)
+
+//        call.enqueue(object : Callback<Order> {
+//            override fun onFailure(call: Call<Order>?, t: Throwable?) {
+//                println(t!!.message)
+//            }
+//
+//            override fun onResponse(call: Call<Order>?, response: Response<Order>?) {
+//                println(response)
+//                println(response!!.code())
+//            }
+//
+//        })
+
+
+        var call: Call<String> = apiServe.postOrderBody(TOKEN, Gson().toJson(order))
+        call.enqueue(object : Callback<String> {
+            override fun onFailure(call: Call<String>?, t: Throwable?) {
+                println(t!!.message)
+            }
+
+            override fun onResponse(call: Call<String>?, response: Response<String>?) {
+                println(response)
+                println(response!!.code())
+            }
+
+        })
     }
 
     fun populateCart() {
