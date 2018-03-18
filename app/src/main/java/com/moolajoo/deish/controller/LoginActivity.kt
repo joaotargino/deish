@@ -155,11 +155,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         //TODO fazer o login valido
-        mAuthTask = UserLoginTask(emailStr, passwordStr)
-        mAuthTask!!.execute(null as Void?)
+//        mAuthTask = UserLoginTask("string", "string")
+//        mAuthTask!!.execute(null as Void?)
 
 
-        initMainActivity()
+//        initMainActivity()
     }
 
     private fun login(email: String, password: String) {
@@ -190,12 +190,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
                         }
                 )
-        
+
     }
 
     private fun isEmailValid(email: String): Boolean {
         //TODO: Replace this with your own logic
-        return email.contains("@")
+        return email.contains("@") or email.equals("string") //string == default
     }
 
     private fun isPasswordValid(password: String): Boolean {
@@ -305,13 +305,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             var urlConnection: HttpURLConnection? = null
             var reader: BufferedReader? = null
 
-            var result: String = ""
+            var result = ""
 
             val LOGIN_BASE_URL: String =
                     BASE_URL
             val QUERY_PARAM: String = "Customer/auth?"
-            val EMAIL_PARAM: String = "email=" + "string"
-            val PASSWORD_PARAM: String = "&password=" + "string"
+            val EMAIL_PARAM: String = "email=" + mEmail
+            val PASSWORD_PARAM: String = "&password=" + mPassword
 
 
             val url: URL = URL(LOGIN_BASE_URL + QUERY_PARAM + EMAIL_PARAM + PASSWORD_PARAM)
@@ -333,9 +333,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 }
                 reader = BufferedReader(InputStreamReader(inputStream))
 
-                var line : String = reader.readLine()
+                var result : String = reader.readLine()
 
-                result = line
 
 //                while (reader.readLine() != null) {
 //                    println(line)
