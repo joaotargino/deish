@@ -10,29 +10,29 @@ import retrofit2.http.*
  */
 interface ApiService {
 
-    @GET("store")
+    @GET("Store")
     fun getStores(): Observable<List<StoreResponse>>
 
-    @GET("store")
+    @GET("Store")
     fun getStoresList(): Observable<List<Store>>
 
-    @GET("store/{id}")
+    @GET("Store/{id}")
     fun getStoreDetail(@Path("id") sort: String): Observable<Store>
 
 
-    @GET("store/{id}/products")
+    @GET("Store/{id}/products")
     abstract fun getStoreProducts(@Path("id") id: String): Observable<List<Product>>
 
     //Customer/auth
 
     @FormUrlEncoded
-    @POST("Customer/auth?")
+    @POST("Customer/auth")
     fun login(@Field("email") username: String, @Field("password") password: String)
-                                            : Observable<LoginResponse>
+                                            : Observable<String>
 
-    @POST("Customer/auth?")
+    @POST("Customer/auth")
     fun postLogin(@Query("email") username: String,
-                  @Query("password") password: String): Observable<LoginResponse>
+                  @Query("password") password: String): Observable<String>
 
 
 }

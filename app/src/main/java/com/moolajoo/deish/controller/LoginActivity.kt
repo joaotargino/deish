@@ -152,12 +152,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             showProgress(true)
             mAuthTask = UserLoginTask(emailStr, passwordStr)
             mAuthTask!!.execute(null as Void?)
-            login("string", "string")
         }
 
-//        mAuthTask = UserLoginTask(emailStr, passwordStr)
-//        mAuthTask!!.execute(null as Void?)
-        login("string", "string")
+        //TODO fazer o login valido
+        mAuthTask = UserLoginTask(emailStr, passwordStr)
+        mAuthTask!!.execute(null as Void?)
+
 
         initMainActivity()
     }
@@ -177,7 +177,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 //                                    Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
 //                                }
 //                        )
-        disposable = apiServe.postLogin(email, password)
+        disposable = apiServe.login(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -190,25 +190,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
                         }
                 )
-
-
-//        disposable = apiServe.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<Post>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(Post post) {
-//                        showResponse(post.toString());
-//                    }
-//                });
+        
     }
 
     private fun isEmailValid(email: String): Boolean {
@@ -351,20 +333,23 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 }
                 reader = BufferedReader(InputStreamReader(inputStream))
 
-                lateinit var line : String
+                var line : String = reader.readLine()
 
-                while (line != null) {
-                    println(line)
-                    buffer.append(line + "\n")
-                    line = reader.readLine()
-                }
+                result = line
 
-                if (buffer.length == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return null
-                }
-                result = buffer.toString()
+//                while (reader.readLine() != null) {
+//                    println(line)
+//                    buffer.append(line + "\n")
+//                    line = reader.readLine()
+//                }
+//
+//                if (buffer.length == 0) {
+//                    // Stream was empty.  No point in parsing.
+//                    return null
+//                }
+//                result = buffer.toString()
 
+                println("TOKEN:")
                 println(result)
                 // Simulate network access.
 //                Thread.sleep(2000)
@@ -384,6 +369,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
                 }
             }
+
+            if (!result.isEmpty()) return true
 
             return DUMMY_CREDENTIALS
                     .map { it.split(":") }
