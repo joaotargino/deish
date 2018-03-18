@@ -14,7 +14,7 @@
         tools:layout_editor_absoluteY="0dp">
 
         <TextView
-            android:id="@+id/tvItemName"
+            android:id="@+id/tvOrderContact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -23,13 +23,23 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tvItemQuantity"
+            android:id="@+id/tvOrderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="32dp"
+            android:paddingLeft="32dp"
+            android:text="TextView"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tvOrderTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="32dp"
             android:text="1"
-            android:textSize="32sp" />
+            android:textSize="24sp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

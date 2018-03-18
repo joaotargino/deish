@@ -11,8 +11,10 @@ import com.moolajoo.deish.adapters.StoresAdapter
 import com.moolajoo.deish.model.Store
 import com.moolajoo.deish.model.StoreResponse
 import com.moolajoo.deish.network.ApiClient
+import com.moolajoo.deish.util.EXTRA_ORDER
 import com.moolajoo.deish.util.EXTRA_STORE
 import com.moolajoo.deish.util.RESPONSE
+import com.moolajoo.deish.util.TOKEN
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -34,7 +36,13 @@ class MainActivity : AppCompatActivity() {
         //wip save/restore
         fetchStores()
 
+        fabViewOrders.setOnClickListener {
+            val viewOrdersIntent = Intent(this, ViewOrdersActivity::class.java)
+            viewOrdersIntent.putExtra(EXTRA_ORDER, TOKEN)
+            startActivity(viewOrdersIntent)
+        }
     }
+
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)

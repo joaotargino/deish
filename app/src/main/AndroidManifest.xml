@@ -34,10 +34,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.StoreDetailActivity" />
-
-        <activity android:name=".controller.CartActivity" android:label="Cart">
-
-        </activity>
+        <activity
+            android:name=".controller.CartActivity"
+            android:label="Cart"></activity>
+        <activity android:name=".controller.ViewOrdersActivity"></activity>
     </application>
 
 </manifest>

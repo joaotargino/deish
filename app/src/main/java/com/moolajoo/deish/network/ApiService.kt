@@ -71,4 +71,9 @@ interface ApiService {
             @Body order: RequestBody
 
     ) :Call<Order>
+
+
+    @GET("Order/customer")
+    fun getOrder(@Header("Authorization") token : String,
+                 @Header("Content-Type") contentType : String): Observable<List<Order>>
 }

@@ -31,9 +31,7 @@ class CartActivity : AppCompatActivity() {
         ApiClient.create()
     }
 
-
     val storeObject: Store? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,13 +47,9 @@ class CartActivity : AppCompatActivity() {
         val status = "WAITING"
         val lastUpdate = "2018-03-18T15:47:29.944Z"
 
-//        println(storeObject.id)
-//        println(mProductsList)
+
         populateCart()
         createOrder()
-
-
-
 
         fabPlaceOrder.setOnClickListener {
             //get array list, start order activity
@@ -72,40 +66,8 @@ class CartActivity : AppCompatActivity() {
 
 
     fun placeOrder(order: Order) {
-//        var call: Call<Order> = apiServe.postOrder(TOKEN, order.id, order.date, order.customerId, order.deliveryAddress,
-//                order.contact, order.storeId, order.orderItens, order.total, order.status,
-//                order.lastUpdate)
-
-//        call.enqueue(object : Callback<Order> {
-//            override fun onFailure(call: Call<Order>?, t: Throwable?) {
-//                println(t!!.message)
-//            }
-//
-//            override fun onResponse(call: Call<Order>?, response: Response<Order>?) {
-//                println(response)
-//                println(response!!.code())
-//            }
-//
-//        })
-
-//        var call: Call<String> = apiServe.postSimpleOrder(TOKEN, "application/json-patch+json",
-//                order.deliveryAddress,
-//                order.contact, order.storeId, order.orderItens, order.total, order.status)
-//
-//        call.enqueue(object : Callback<String> {
-//            override fun onFailure(call: Call<String>?, t: Throwable?) {
-//                println(t!!.message)
-//            }
-//
-//            override fun onResponse(call: Call<String>?, response: Response<String>?) {
-//                println(response)
-//                println(response!!.code())
-//            }
-//
-//        })
 
         val body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), Gson().toJson(order))
-
 
         var call: Call<Order> = apiServe.postOrderBody(TOKEN, "application/json", body)
         call.enqueue(object : Callback<Order> {
@@ -117,9 +79,12 @@ class CartActivity : AppCompatActivity() {
 
                 println("Response")
                 println(response!!.body())
-                val leOrder : Order = response!!.body() as Order
+                val leOrder: Order = response!!.body() as Order
                 println("le " + leOrder.total)
                 println(response!!.code())
+                Toast.makeText(applicationContext, "NHAM, your order was a success!", Toast.LENGTH_SHORT).show()
+
+                finish()
             }
 
         })
