@@ -2,6 +2,7 @@ package com.moolajoo.deish.network
 
 import com.moolajoo.deish.model.*
 import io.reactivex.Observable
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.util.ArrayList
@@ -51,11 +52,23 @@ interface ApiService {
     ) :Call<Order>
 
 
+    @Multipart
+    @POST ("Order")
+    fun postSimpleOrder(
+            @Header("Authorization") token : String,
+            @Header("Content-Type") contentType : String,
+            @Part("deliveryAddress") deliveryAddress: String,
+            @Part("contact") contact: String, @Part("storeId") storeId: Int,
+            @Part("orderItens") orderItens: ArrayList<OrderItem>,
+            @Part("total") total: Double, @Part("status") status: String
+    ) :Call<String>
+
 
     @POST ("Order")
     fun postOrderBody(
             @Header("Authorization") token : String,
-            @Body order: String
+            @Header("Content-Type") contentType : String,
+            @Body order: RequestBody
 
-    ) :Call<String>
+    ) :Call<Order>
 }

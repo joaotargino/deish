@@ -16,6 +16,7 @@ import com.moolajoo.deish.util.EXTRA_CART
 import com.moolajoo.deish.util.EXTRA_STORE
 import com.moolajoo.deish.util.TOKEN
 import kotlinx.android.synthetic.main.activity_cart.*
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,11 +46,11 @@ class CartActivity : AppCompatActivity() {
         val customerID = 0 //TODO get the customer!!!
         val address = "Address"
         val contact = "99998 0605"
-        val status = "processing"
-        val lastUpdate = "date"
+        val status = "WAITING"
+        val lastUpdate = "2018-03-18T15:47:29.944Z"
 
-        println(storeObject.name)
-        println(mProductsList)
+//        println(storeObject.id)
+//        println(mProductsList)
         populateCart()
         createOrder()
 
@@ -61,9 +62,9 @@ class CartActivity : AppCompatActivity() {
             println(mOrder!!)
 
             if (!mOrder!!.isEmpty()) {
-                val theOrder = Order(424242, "date", customerID, address, contact, storeId,
+                val theOrder = Order(0, "2018-03-18T15:47:29.944Z", customerID, address, contact, storeId,
                         mOrder!!, mOrder!!.get(0).total, status, lastUpdate)
-                println(Gson().toJson(theOrder))
+//                println(Gson().toJson(theOrder))
                 placeOrder(theOrder)
             }
         }
@@ -87,15 +88,37 @@ class CartActivity : AppCompatActivity() {
 //
 //        })
 
+//        var call: Call<String> = apiServe.postSimpleOrder(TOKEN, "application/json-patch+json",
+//                order.deliveryAddress,
+//                order.contact, order.storeId, order.orderItens, order.total, order.status)
+//
+//        call.enqueue(object : Callback<String> {
+//            override fun onFailure(call: Call<String>?, t: Throwable?) {
+//                println(t!!.message)
+//            }
+//
+//            override fun onResponse(call: Call<String>?, response: Response<String>?) {
+//                println(response)
+//                println(response!!.code())
+//            }
+//
+//        })
 
-        var call: Call<String> = apiServe.postOrderBody(TOKEN, Gson().toJson(order))
-        call.enqueue(object : Callback<String> {
-            override fun onFailure(call: Call<String>?, t: Throwable?) {
+        val body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), Gson().toJson(order))
+
+
+        var call: Call<Order> = apiServe.postOrderBody(TOKEN, "application/json", body)
+        call.enqueue(object : Callback<Order> {
+            override fun onFailure(call: Call<Order>?, t: Throwable?) {
                 println(t!!.message)
             }
 
-            override fun onResponse(call: Call<String>?, response: Response<String>?) {
-                println(response)
+            override fun onResponse(call: Call<Order>?, response: Response<Order>?) {
+
+                println("Response")
+                println(response!!.body())
+                val leOrder : Order = response!!.body() as Order
+                println("le " + leOrder.total)
                 println(response!!.code())
             }
 
@@ -122,8 +145,8 @@ class CartActivity : AppCompatActivity() {
         var orderMap = HashMap<String, Int>()
         var orderItens = HashMap<String, OrderItem>()
 
-        val id = 4242
-        val orderId = 4242
+        val id = 0
+        val orderId = 0
         val qtd = 1
         var total: Double = 0.0
 
@@ -131,7 +154,6 @@ class CartActivity : AppCompatActivity() {
             if (orderMap.containsKey(item.name)) {
 
                 total += item.price
-                println(total)
                 val quantity = orderMap.get(item.name) as Int + 1
                 orderMap.put(item.name, quantity)
                 orderItens.put(item.name, OrderItem(id, orderId, item.id, item,
@@ -141,16 +163,11 @@ class CartActivity : AppCompatActivity() {
                 total += item.price
                 orderMap[item.name] = 1
                 orderItens[item.name] = OrderItem(id, orderId, item.id, item, item.price, qtd, total)
-                println(total)
             }
         }
         println(orderItens)
         for (p in orderItens.iterator()) {
             mOrder!!.add(p.value)
-//            println(p.value.product.name)
-//            println(p.value.quantity)
-//            println(p.value.price)
-//            println(p.value.total)
         }
         val totalString = "Total: $ %.2f".format(total)
         tvTotalValue.text = totalString
