@@ -22,6 +22,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import com.moolajoo.deish.R
 import com.moolajoo.deish.network.ApiClient
 import com.moolajoo.deish.util.BASE_URL
@@ -121,6 +122,9 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         val emailStr = email.text.toString()
         val passwordStr = password.text.toString()
 
+        val nameStr = name.text.toString()
+        val addressStr = address.text.toString()
+
         var cancel = false
         var focusView: View? = null
 
@@ -150,12 +154,18 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true)
-            mAuthTask = UserLoginTask(emailStr, passwordStr)
-            mAuthTask!!.execute(null as Void?)
+            try {
+                mAuthTask = UserLoginTask(emailStr, passwordStr, nameStr, addressStr)
+                mAuthTask!!.execute(null as Void?)
+            } catch (e: Exception) {
+                Toast.makeText(applicationContext, "Invalid attempt, check username and password", Toast.LENGTH_SHORT).show()
+
+            }
+
         }
 
         //TODO fazer o login valido
-//        mAuthTask = UserLoginTask("string", "string")
+//        mAuthTask = UserLoginTask(emailStr, passwordStr, nameStr, addressStr)
 //        mAuthTask!!.execute(null as Void?)
 
 
@@ -298,7 +308,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String) : AsyncTask<Void, Void, Boolean>() {
+    inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String,
+                                                   private val mName: String, private val mAddress: String) : AsyncTask<Void, Void, Boolean>() {
 
         override fun doInBackground(vararg params: Void): Boolean? {
             // TODO: attempt authentication against a network service.
@@ -314,6 +325,9 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             val PASSWORD_PARAM: String = "&password=" + mPassword
 
 
+            if (mName.isEmpty() or mAddress.isEmpty()) {
+                println("empty")
+            }
             val url: URL = URL(LOGIN_BASE_URL + QUERY_PARAM + EMAIL_PARAM + PASSWORD_PARAM)
 
 
@@ -333,7 +347,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 }
                 reader = BufferedReader(InputStreamReader(inputStream))
 
-                var result : String = reader.readLine()
+                var result: String = reader.readLine()
 
 
 //                while (reader.readLine() != null) {
@@ -352,7 +366,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                 println(result)
                 // Simulate network access.
 //                Thread.sleep(2000)
-            } catch (e: InterruptedException) {
+            } catch (e: Exception) {
                 println(e.message)
                 return false
             } finally {
