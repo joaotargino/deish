@@ -8,6 +8,7 @@ import android.util.DisplayMetrics
 import android.widget.Toast
 import com.moolajoo.deish.R
 import com.moolajoo.deish.adapters.ProductsAdapter
+import com.moolajoo.deish.model.OrderItem
 import com.moolajoo.deish.model.Product
 import com.moolajoo.deish.model.Store
 import com.moolajoo.deish.network.ApiClient
@@ -25,7 +26,9 @@ class StoreDetailActivity : AppCompatActivity() {
     private var disposable: Disposable? = null
 
 
-    private var currentCart: ArrayList<Product>? = ArrayList<Product>()
+    private var productsOnCart: ArrayList<Product>? = ArrayList<Product>()
+    private var currentOrder: ArrayList<OrderItem>? = ArrayList<OrderItem>()
+
 
     private val apiServe by lazy {
         ApiClient.create()
@@ -43,10 +46,11 @@ class StoreDetailActivity : AppCompatActivity() {
 
         fabCart.setOnClickListener {
             //get array list, start order activity
-            println(currentCart!!.toString())
+            println(productsOnCart!!.toString())
 
             val orderIntent = Intent(this, CartActivity::class.java)
-            orderIntent.putExtra(EXTRA_CART, currentCart)
+            orderIntent.putExtra(EXTRA_CART, productsOnCart)
+            orderIntent.putExtra(EXTRA_STORE, storeObject)
             startActivity(orderIntent)
         }
     }
@@ -75,7 +79,7 @@ class StoreDetailActivity : AppCompatActivity() {
         adapter = ProductsAdapter(this, mProductsList!!) { productItem ->
             println(productItem.name)
             Toast.makeText(this, productItem.name + " added", Toast.LENGTH_SHORT).show()
-            currentCart!!.add(productItem)
+            productsOnCart!!.add(productItem)
 
             //TODO add dialog box to confirm/cancel adding a product and/or snackbar to undo
         }
@@ -85,6 +89,10 @@ class StoreDetailActivity : AppCompatActivity() {
         recyclerViewProducts.layoutManager = layoutManager
 //        recyclerView.layoutManager.smoothScrollToPosition(recyclerView, null, viewPosition) //TODO scroll on restore
         recyclerViewProducts.setHasFixedSize(true)
+
+    }
+
+    fun createOrder(){
 
     }
 

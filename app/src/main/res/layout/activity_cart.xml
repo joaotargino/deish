@@ -42,4 +42,14 @@
         app:srcCompat="@android:drawable/ic_menu_send"
         tools:layout_editor_absoluteY="115dp" />
 
+    <TextView
+        android:id="@+id/tvTotalValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="32sp"
+        app:layout_anchor="@+id/recyclerViewCart"
+        app:layout_anchorGravity="left|bottom"
+        tools:text="Total" />
+
 </android.support.design.widget.CoordinatorLayout>
