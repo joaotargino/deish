@@ -19,6 +19,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_store_detail.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.toast
 
 class StoreDetailActivity : AppCompatActivity() {
 
@@ -83,9 +85,16 @@ class StoreDetailActivity : AppCompatActivity() {
 
         adapter = ProductsAdapter(this, mProductsList!!) { productItem ->
             println(productItem.name)
-            Toast.makeText(this, productItem.name + " added", Toast.LENGTH_SHORT).show()
-            productsOnCart!!.add(productItem)
 
+            alert(productItem.description,productItem.name) {
+                positiveButton("Add to Cart") {
+                    productsOnCart!!.add(productItem)
+                    toast(productItem.name + " added")
+                }
+                negativeButton("Cancel"){
+                    
+                }
+            }.show()
             //TODO add dialog box to confirm/cancel adding a product and/or snackbar to undo
         }
         recyclerViewProducts.adapter = adapter
