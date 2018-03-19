@@ -26,6 +26,7 @@ import android.widget.Toast
 import com.moolajoo.deish.R
 import com.moolajoo.deish.network.ApiClient
 import com.moolajoo.deish.util.BASE_URL
+import com.moolajoo.deish.util.EXTRA_TOKEN
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -300,7 +301,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     fun initMainActivity(token : String) {
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.putExtra("username", "string")
-        intent.putExtra("token", token)
+        intent.putExtra(EXTRA_TOKEN, token)
         startActivity(intent)
     }
 

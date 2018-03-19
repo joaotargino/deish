@@ -14,6 +14,7 @@ import com.moolajoo.deish.model.Store
 import com.moolajoo.deish.network.ApiClient
 import com.moolajoo.deish.util.EXTRA_CART
 import com.moolajoo.deish.util.EXTRA_STORE
+import com.moolajoo.deish.util.EXTRA_TOKEN
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -34,11 +35,14 @@ class StoreDetailActivity : AppCompatActivity() {
         ApiClient.create()
     }
 
+    private var token: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_detail)
 
         val storeObject = intent.getParcelableExtra<Store>(EXTRA_STORE)
+        token = intent.getStringExtra(EXTRA_TOKEN)
 
         fetchProducts(storeObject.id)
 
@@ -51,6 +55,7 @@ class StoreDetailActivity : AppCompatActivity() {
             val orderIntent = Intent(this, CartActivity::class.java)
             orderIntent.putExtra(EXTRA_CART, productsOnCart)
             orderIntent.putExtra(EXTRA_STORE, storeObject)
+            orderIntent.putExtra(EXTRA_TOKEN, token)
             startActivity(orderIntent)
         }
     }
@@ -92,9 +97,6 @@ class StoreDetailActivity : AppCompatActivity() {
 
     }
 
-    fun createOrder(){
-
-    }
 
 
     override fun onPause() {

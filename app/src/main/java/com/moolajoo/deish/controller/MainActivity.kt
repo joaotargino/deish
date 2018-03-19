@@ -11,10 +11,7 @@ import com.moolajoo.deish.adapters.StoresAdapter
 import com.moolajoo.deish.model.Store
 import com.moolajoo.deish.model.StoreResponse
 import com.moolajoo.deish.network.ApiClient
-import com.moolajoo.deish.util.EXTRA_ORDER
-import com.moolajoo.deish.util.EXTRA_STORE
-import com.moolajoo.deish.util.RESPONSE
-import com.moolajoo.deish.util.TOKEN
+import com.moolajoo.deish.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -30,15 +27,18 @@ class MainActivity : AppCompatActivity() {
     }
     private var disposable: Disposable? = null
 
+    private var token : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //wip save/restore
         fetchStores()
 
+        token = intent.getStringExtra(EXTRA_TOKEN)
+
         fabViewOrders.setOnClickListener {
             val viewOrdersIntent = Intent(this, ViewOrdersActivity::class.java)
-            viewOrdersIntent.putExtra(EXTRA_ORDER, TOKEN)
+            viewOrdersIntent.putExtra(EXTRA_TOKEN, token)
             startActivity(viewOrdersIntent)
         }
     }
@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         adapter = StoresAdapter(this, mStoresList!!) { storeItem ->
             val storesIntent = Intent(this, StoreDetailActivity::class.java)
             storesIntent.putExtra(EXTRA_STORE, storeItem)
+            storesIntent.putExtra(EXTRA_TOKEN, token)
             startActivity(storesIntent)
         }
         recyclerView.adapter = adapter

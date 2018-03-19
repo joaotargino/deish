@@ -14,7 +14,8 @@ import com.moolajoo.deish.model.Store
 import com.moolajoo.deish.network.ApiClient
 import com.moolajoo.deish.util.EXTRA_CART
 import com.moolajoo.deish.util.EXTRA_STORE
-import com.moolajoo.deish.util.TOKEN
+import com.moolajoo.deish.util.EXTRA_TOKEN
+import com.moolajoo.deish.util.TOKEN_PARAM
 import kotlinx.android.synthetic.main.activity_cart.*
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -31,6 +32,8 @@ class CartActivity : AppCompatActivity() {
         ApiClient.create()
     }
 
+    private var token: String = ""
+
     val storeObject: Store? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +43,14 @@ class CartActivity : AppCompatActivity() {
         mProductsList = intent.getSerializableExtra(EXTRA_CART) as List<Product>
         val storeObject = intent.getParcelableExtra<Store>(EXTRA_STORE)
         val storeId = storeObject.id
-        //temp
+        token = intent.getStringExtra(EXTRA_TOKEN)
+
+        //temp, hardcoding some strings
         val customerID = 0 //TODO get the customer!!!
         val address = "Address"
-        val contact = "99998 0605"
+        val contact = "my contact"
         val status = "WAITING"
+        //hardcoding dates because it's optional and bugs ><
         val lastUpdate = "2018-03-18T15:47:29.944Z"
 
 
@@ -69,7 +75,7 @@ class CartActivity : AppCompatActivity() {
 
         val body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), Gson().toJson(order))
 
-        var call: Call<Order> = apiServe.postOrderBody(TOKEN, "application/json", body)
+        var call: Call<Order> = apiServe.postOrderBody(TOKEN_PARAM + token, "application/json", body)
         call.enqueue(object : Callback<Order> {
             override fun onFailure(call: Call<Order>?, t: Throwable?) {
                 println(t!!.message)

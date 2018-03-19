@@ -5,16 +5,15 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.widget.Toast
 import com.moolajoo.deish.R
-import com.moolajoo.deish.adapters.CartAdapter
 import com.moolajoo.deish.adapters.OrdersAdapter
 import com.moolajoo.deish.model.Order
 import com.moolajoo.deish.model.OrderItem
 import com.moolajoo.deish.network.ApiClient
-import com.moolajoo.deish.util.TOKEN
+import com.moolajoo.deish.util.EXTRA_TOKEN
+import com.moolajoo.deish.util.TOKEN_PARAM
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.activity_view_orders.*
 
 class ViewOrdersActivity : AppCompatActivity() {
@@ -29,32 +28,36 @@ class ViewOrdersActivity : AppCompatActivity() {
         ApiClient.create()
     }
 
+    private var token: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_orders)
 
         title = "View Orders"
+        token = intent.getStringExtra(EXTRA_TOKEN)
         fetchOrders()
     }
 
-    fun fetchOrders(){
+    fun fetchOrders() {
         disposable =
-                    apiServe.getOrder(TOKEN, "application/json")
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    { result ->
-                                        mOrderList = result
-                                        println(result)
-                                        populateOrders()
-                                    },
-                                    { error ->
-                                        println(error.message)
-                                        Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
-                                    }
-                            )
+                apiServe.getOrder(TOKEN_PARAM + token, "application/json")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                { result ->
+                                    mOrderList = result
+                                    println(result)
+                                    populateOrders()
+                                },
+                                { error ->
+                                    println(error.message)
+                                    Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
+                                }
+                        )
 
     }
+
     fun populateOrders() {
 
         adapter = OrdersAdapter(this, mOrderList!!) { orderItem ->
