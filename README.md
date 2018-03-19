@@ -26,7 +26,7 @@ App's flow:
     - The list of stores is displayed, select one to see the products 
     - or the floating action button to display previous orders
 - **Store Detail Activity:** 
-    - Tap on a product to add to the cart (wip, dialog to confirm or cancel that you want to add, displaying the description of that product
+    - Tap on a product to add to the cart (a dialog opens with description and option to add to cart)
     - Press the button to view the cart with values
 - **Cart Activity:**
     - View the order and submit
