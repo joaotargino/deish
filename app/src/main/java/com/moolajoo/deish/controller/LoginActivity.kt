@@ -324,11 +324,20 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             val EMAIL_PARAM: String = "email=" + mEmail
             val PASSWORD_PARAM: String = "&password=" + mPassword
 
+            val REGISTER_PARAM: String = "Customer?"
+            val NAME_PARAM : String = "&name=" + mName
+            val ADDRESS_PARAM : String = "&address=" + mAddress
 
+
+            var url: URL
             if (mName.isEmpty() or mAddress.isEmpty()) {
                 println("empty")
+                url = URL(LOGIN_BASE_URL + QUERY_PARAM + EMAIL_PARAM + PASSWORD_PARAM)
             }
-            val url: URL = URL(LOGIN_BASE_URL + QUERY_PARAM + EMAIL_PARAM + PASSWORD_PARAM)
+            else{
+                url = URL(LOGIN_BASE_URL + REGISTER_PARAM + EMAIL_PARAM + PASSWORD_PARAM + NAME_PARAM + ADDRESS_PARAM)
+            }
+
 
 
             try {

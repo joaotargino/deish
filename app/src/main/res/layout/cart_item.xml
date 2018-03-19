@@ -20,7 +20,7 @@
             android:layout_weight="1"
             android:paddingBottom="32dp"
             android:text="TextView"
-            android:textSize="24sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvItemQuantity"
@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:paddingLeft="32dp"
             android:text="1"
-            android:textSize="32sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
